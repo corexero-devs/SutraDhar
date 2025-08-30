@@ -85,6 +85,7 @@ kotlin {
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
                 implementation(dependencies.platform(libs.firebase.bom))
+                implementation(dependencies.platform(libs.firebase.crashlytics))
                 implementation(libs.firebase.analytics)
                 implementation(libs.firebase.config)
                 implementation(libs.sqlDelight.android)
