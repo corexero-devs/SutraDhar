@@ -13,6 +13,8 @@ runner = "1.7.0"
 androidx-test-junit = "1.2.1"
 androidx-activityCompose = "1.10.1"
 core = "1.7.0"
+playService = "4.4.3"
+googleFirebaseCrashlytics = "3.0.6"
 
 //libraries
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
@@ -48,3 +50,5 @@ androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 androidKotlinMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 androidLint = { id = "com.android.lint", version.ref = "agp" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+goggleService = { id = "com.google.gms.google-services", version.ref = "playService" }
+googleFirebaseCrashlytics = { id = "com.google.firebase.crashlytics", version.ref = "googleFirebaseCrashlytics" }
