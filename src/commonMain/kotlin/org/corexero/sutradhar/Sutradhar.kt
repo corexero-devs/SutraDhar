@@ -6,6 +6,7 @@ import org.corexero.sutradhar.network.NetworkConfig
 
 /** App supplies this at runtime. Keep secrets out of the library. */
 interface SutradharConfig {
+    val productId: String
     val reviewBaseUrl: String
         get() = NetworkConfig.REVIEW_BASE_URL
 

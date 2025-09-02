@@ -1,6 +1,5 @@
 package org.corexero.sutradhar.notification
 
-
 import android.content.pm.PackageManager
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -9,10 +8,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import org.corexero.sutradhar.network.HttpClientProvider
+import org.corexero.sutradhar.Sutradhar
 import org.corexero.sutradhar.network.repository.SutradharRepositoryImpl
 import java.util.Locale
-
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val repo = SutradharRepositoryImpl()
@@ -20,14 +18,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onCreate() {
         super.onCreate()
-        // Ensure we have a token at boot/install/update
-//        FirebaseMessaging.getInstance().token.addOnSuccessListener { t ->
-//            if (!t.isNullOrBlank()) sendToken(t)
-//        }
     }
 
     override fun onNewToken(token: String) {
-        Log.d("FCM", "New FCM token: $token")
         sendToken(token)
     }
 
@@ -35,16 +28,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         message.notification?.let {
             showNotification(it.title, it.body)
         }
-        Log.d("FCM", "Message received: ${message.data}")
     }
 
     private fun sendToken(token: String) {
         val req = NotificationTokenRequest(
             token = token,
             platform = "android",
-            productId = "BuildConfig.PRODUCT_ID",     // define in app’s build.gradle
+            productId = Sutradhar.config.productId,
             appId = packageName,
-            userIdentifier = null,                  // fill if you have a logged-in user id
+            userIdentifier = null,
             locale = Locale.getDefault().toLanguageTag(),
             appVersion = appVersion()
         )
