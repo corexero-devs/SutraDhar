@@ -1,4 +1,4 @@
-package org.corexero.sutradhar.network
+package org.corexero.sutradhar.network.repository
 
 import org.corexero.sutradhar.notification.NotificationTokenRequest
 import org.corexero.sutradhar.notification.dto.NotificationResponse

@@ -1,6 +1,5 @@
-package org.corexero.sutradhar.network
+package org.corexero.sutradhar.network.repository
 
-import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
@@ -9,24 +8,27 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import org.corexero.sutradhar.network.NetworkConfig.NOTIFICATION_BASE_URL
-import org.corexero.sutradhar.network.NetworkConfig.REVIEW_BASE_URL
+import org.corexero.sutradhar.Sutradhar
 import org.corexero.sutradhar.notification.NotificationTokenRequest
 import org.corexero.sutradhar.notification.dto.NotificationResponse
 import org.corexero.sutradhar.review.dto.FeedbackEnvelope
 import org.corexero.sutradhar.review.dto.FeedbackRequest
 
-class SutradharRepositoryImpl (
-    private val httpClient: HttpClient
-) : SutradharRepository {
+class SutradharRepositoryImpl : SutradharRepository {
+
+    private val http get() = Sutradhar.httpClient
+    private val cfg get() = Sutradhar.config
+
     override suspend fun saveUserFeedback(
         feedbackRequest: FeedbackRequest
     ): Result<FeedbackEnvelope> = runCatching {
         postJson<FeedbackEnvelope>(
-            baseUrl = REVIEW_BASE_URL,
+            baseUrl = cfg.reviewBaseUrl,
             path = "api/v1/review/add",
             bodyObj = feedbackRequest,
-            headerPairs = listOf("X-API-Key" to "getReviewApiKey()") // <-- no quotes around function
+            headerPairs = listOf(
+                "X-API-Key" to cfg.reviewApiKey()
+            ) + cfg.defaultHeaders.toList()
         )
     }
 
@@ -34,10 +36,12 @@ class SutradharRepositoryImpl (
         notificationTokenRequest: NotificationTokenRequest
     ): Result<NotificationResponse> = runCatching {
         postJson<NotificationResponse>(
-            baseUrl = NOTIFICATION_BASE_URL,
+            baseUrl = cfg.notificationBaseUrl,
             path = "api/v1/tokens",
             bodyObj = notificationTokenRequest,
-            headerPairs = listOf("x-api-key" to "getNotificationApiKey()"),
+            headerPairs = listOf(
+                "x-api-key" to cfg.notificationApiKey()
+            ) + cfg.defaultHeaders.toList(),
             successRange = 200..201
         )
     }
@@ -49,7 +53,7 @@ class SutradharRepositoryImpl (
         headerPairs: List<Pair<String, String>> = emptyList(),
         successRange: IntRange = 200..299,
     ): R {
-        val resp = httpClient.post {
+        val resp = http.post {
             url("${baseUrl.trimEnd('/')}/${path.trimStart('/')}")
             contentType(ContentType.Application.Json)
             headers { headerPairs.forEach { (k, v) -> append(k, v) } }
@@ -58,5 +62,4 @@ class SutradharRepositoryImpl (
         if (resp.status.value in successRange) return resp.body()
         error("HTTP ${resp.status.value}: ${resp.bodyAsText()}")
     }
-
 }

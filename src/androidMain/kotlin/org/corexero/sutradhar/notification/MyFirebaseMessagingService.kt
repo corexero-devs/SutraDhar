@@ -10,12 +10,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.corexero.sutradhar.network.HttpClientProvider
-import org.corexero.sutradhar.network.SutradharRepositoryImpl
+import org.corexero.sutradhar.network.repository.SutradharRepositoryImpl
 import java.util.Locale
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
-    private val repo = SutradharRepositoryImpl(HttpClientProvider.client)
+    private val repo = SutradharRepositoryImpl()
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onCreate() {
