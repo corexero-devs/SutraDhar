@@ -15,6 +15,8 @@ interface SutradharConfig {
 
     fun reviewApiKey(): String
     fun notificationApiKey(): String
+    val notificationIcon: Int
+
     val defaultHeaders: Map<String, String> get() = emptyMap()
 }
 
