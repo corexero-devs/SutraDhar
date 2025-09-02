@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
 }
 
+
 kotlin {
 
     // Target declarations - add or remove as needed below. These define
@@ -14,7 +15,6 @@ kotlin {
         namespace = "org.corexero.sutradhar"
         compileSdk = 36
         minSdk = 24
-
 
         withHostTestBuilder {
         }
