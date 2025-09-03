@@ -106,6 +106,7 @@ kotlin {
                 implementation(libs.integrity)
                 implementation(libs.koin.android)
                 implementation(libs.koin.androidx.compose)
+                implementation(libs.androidx.browser)
             }
         }
 
