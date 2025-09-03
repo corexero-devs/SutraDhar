@@ -15,7 +15,7 @@ class LiveLocationRepository(
     private val locationRepository: LocationRepository
 ) {
 
-    fun <T> getLiveLocation(locations: List<LocationInfoed<T>>): Flow<LiveLocation> {
+    fun getLiveLocation(locations: List<LocationInfoed>): Flow<LiveLocation> {
         val segments = locations.getSegments()
         return locationRepository
             .getLiveLocationUpdates()
@@ -23,7 +23,7 @@ class LiveLocationRepository(
             .map { location ->
                 val userSegment = findUserSegment(location, segments)
                 userSegment?.let { userSegment ->
-                    LiveLocation.Location<T>(
+                    LiveLocation.Location(
                         start = userSegment.first.start,
                         end = userSegment.first.end,
                         fraction = userSegment.second,
@@ -33,7 +33,7 @@ class LiveLocationRepository(
             }
     }
 
-    private fun <T> List<LocationInfoed<T>>.getSegments(): List<Segment<T>> {
+    private fun List<LocationInfoed>.getSegments(): List<Segment> {
         return this.zipWithNext { a, b -> Segment(a, b) }
     }
 
@@ -67,11 +67,11 @@ class LiveLocationRepository(
         return Pair(t.toFloat(), distanceToProjection)
     }
 
-    private fun <T> findUserSegment(
+    private fun findUserSegment(
         userLocation: TimedLocation,
-        segments: List<Segment<T>>
-    ): Pair<Segment<T>, Float>? {
-        var closestSegment: Segment<T>? = null
+        segments: List<Segment>
+    ): Pair<Segment, Float>? {
+        var closestSegment: Segment? = null
         var closestT = 0f
         var minDistance = Float.MAX_VALUE
 
@@ -94,9 +94,9 @@ class LiveLocationRepository(
         return if (closestSegment != null) closestSegment to closestT else null
     }
 
-    private data class Segment<T>(
-        val start: LocationInfoed<T>,
-        val end: LocationInfoed<T>
+    private data class Segment(
+        val start: LocationInfoed,
+        val end: LocationInfoed
     )
 
 }
