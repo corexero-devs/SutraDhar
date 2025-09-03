@@ -10,7 +10,6 @@ import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.pm.PackageManager
-import org.corexero.sutradhar.Sutradhar
 
 private const val CHANNEL_ID = "default_chanel"
 private const val DEFAULT_NOTIFICATION_ID = 1000

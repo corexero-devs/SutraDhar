@@ -2,13 +2,13 @@ package org.corexero.sutradhar.network.repository
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.headers
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import io.ktor.http.headers
 import org.corexero.sutradhar.appConfig.AppConfigurationProvider
 import org.corexero.sutradhar.notification.dto.NotificationResponse
 import org.corexero.sutradhar.notification.dto.NotificationTokenRequest
@@ -49,7 +49,7 @@ class SutradharRepositoryImpl(
             bodyObj = notificationTokenRequest,
             headerPairs = listOf(
                 "x-api-key" to appConfiguration.notificationApiKey
-            ) + appConfiguration.defaultHeaders.toList(),
+            ),
             successRange = 200..201
         )
     }

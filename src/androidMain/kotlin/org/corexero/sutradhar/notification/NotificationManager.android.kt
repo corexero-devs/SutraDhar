@@ -11,11 +11,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import org.corexero.sutradhar.AndroidAppContext
-import org.corexero.sutradhar.Sutradhar
 
 class AndroidNotificationManager(
-    private val appContext: Context
+    private val context: Context
 ) : NotificationManager {
 
     // Optional: attach an activity when you actually want to prompt
@@ -32,11 +30,11 @@ class AndroidNotificationManager(
     }
 
     override fun hasNotificationPermission(): Boolean {
-        val enabledGlobally = NotificationManagerCompat.from(appContext).areNotificationsEnabled()
+        val enabledGlobally = NotificationManagerCompat.from(context).areNotificationsEnabled()
         if (!enabledGlobally) return false
         return if (Build.VERSION.SDK_INT >= 33) {
             ContextCompat.checkSelfPermission(
-                appContext, Manifest.permission.POST_NOTIFICATIONS
+                context, Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED
         } else true
     }
@@ -56,14 +54,9 @@ class AndroidNotificationManager(
 
     override fun enablePermissionFromSetting() {
         val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-            putExtra(Settings.EXTRA_APP_PACKAGE, appContext.packageName)
+            putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        appContext.startActivity(intent)
+        context.startActivity(intent)
     }
-}
-
-actual object NotificationFactory {
-    actual fun createManager(): NotificationManager =
-        AndroidNotificationManager(appContext = (Sutradhar.appContext as AndroidAppContext).get())
 }

@@ -10,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import org.corexero.sutradhar.Sutradhar
 import org.corexero.sutradhar.appConfig.AppConfigurationProvider
 import org.corexero.sutradhar.network.repository.SutradharRepository
 import org.corexero.sutradhar.notification.dto.NotificationTokenRequest
@@ -24,6 +23,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
 
     private val appConfigurationProvider by inject<AppConfigurationProvider>()
 
+    private val appConfiguration by lazy {
+        appConfigurationProvider.getAppConfiguration()
+    }
+
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onNewToken(token: String) {
@@ -35,7 +38,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
             showNotification(
                 it.title,
                 it.body,
-                appConfigurationProvider.getAppConfiguration().notificationIcon
+                appConfiguration.notificationIcon
             )
         }
     }
@@ -44,7 +47,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
         val req = NotificationTokenRequest(
             token = token,
             platform = "android",
-            productId = Sutradhar.config.productId,
+            productId = appConfiguration.productId,
             appId = packageName,
             userIdentifier = null,
             locale = Locale.getDefault().toLanguageTag(),
