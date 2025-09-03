@@ -3,8 +3,8 @@ package org.corexero.sutradhar.di
 import org.corexero.sutradhar.datastore.DataStoreManager
 import org.corexero.sutradhar.location.LiveLocationRepository
 import org.corexero.sutradhar.network.HttpClientProvider
-import org.corexero.sutradhar.network.SutradharRepository
-import org.corexero.sutradhar.network.SutradharRepositoryImpl
+import org.corexero.sutradhar.network.repository.SutradharRepository
+import org.corexero.sutradhar.network.repository.SutradharRepositoryImpl
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind

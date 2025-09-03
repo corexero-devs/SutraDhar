@@ -1,13 +1,14 @@
 package org.corexero.sutradhar.network.repository
 
+import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.request.headers
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.http.headers
 import org.corexero.sutradhar.Sutradhar
 import org.corexero.sutradhar.notification.dto.NotificationResponse
 import org.corexero.sutradhar.notification.dto.NotificationTokenRequest
@@ -17,9 +18,10 @@ import org.corexero.sutradhar.playIntegrity.dto.DbRequest
 import org.corexero.sutradhar.review.dto.FeedbackEnvelope
 import org.corexero.sutradhar.review.dto.FeedbackRequest
 
-class SutradharRepositoryImpl : SutradharRepository {
+class SutradharRepositoryImpl(
+    private val httpClient: HttpClient,
+) : SutradharRepository {
 
-    private val http get() = Sutradhar.httpClient
     private val cfg get() = Sutradhar.config
 
     override suspend fun saveUserFeedback(
@@ -77,7 +79,7 @@ class SutradharRepositoryImpl : SutradharRepository {
         headerPairs: List<Pair<String, String>> = emptyList(),
         successRange: IntRange = 200..299,
     ): R {
-        val resp = http.post {
+        val resp = httpClient.post {
             url("${baseUrl.trimEnd('/')}/${path.trimStart('/')}")
             contentType(ContentType.Application.Json)
             headers { headerPairs.forEach { (k, v) -> append(k, v) } }

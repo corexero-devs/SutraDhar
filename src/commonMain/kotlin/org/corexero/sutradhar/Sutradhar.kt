@@ -24,10 +24,8 @@ interface SutradharConfig {
 }
 
 object Sutradhar {
-    lateinit var config: SutradharConfig
-        private set
 
-    lateinit var httpClient: HttpClient
+    lateinit var config: SutradharConfig
         private set
 
     lateinit var appContext: AppContext
@@ -35,14 +33,10 @@ object Sutradhar {
 
     fun init(
         config: SutradharConfig,
-        httpClient: HttpClient = HttpClientProvider.client,
         appContext: AppContext
     ) {
         this.config = config
-        this.httpClient = httpClient
         this.appContext = appContext
     }
 
-    val isReady: Boolean
-        get() = this::config.isInitialized && this::httpClient.isInitialized
 }
