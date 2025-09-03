@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Build
 import android.os.Looper
 import android.provider.Settings
@@ -84,7 +85,11 @@ actual class LocationRepository(
 
     actual fun openLocationSettings() {
         if (!isAnyProviderEnabled()) {
-            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts("package", context.packageName, null)
+                addCategory(Intent.CATEGORY_DEFAULT)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
