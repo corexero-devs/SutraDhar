@@ -13,6 +13,9 @@ interface SutradharConfig {
     val notificationBaseUrl: String
         get() = NetworkConfig.NOTIFICATION_BASE_URL
 
+    val dbPlayIntegrityBaseUrl: String
+        get() = NetworkConfig.PLAY_INTEGRITY_BASE_URL
+
     fun reviewApiKey(): String
     fun notificationApiKey(): String
     val notificationIcon: Int

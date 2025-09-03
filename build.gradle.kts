@@ -98,6 +98,7 @@ kotlin {
                 implementation(libs.slf4j.android)
 
                 implementation(libs.androidx.activity)
+                implementation(libs.integrity)
             }
         }
 

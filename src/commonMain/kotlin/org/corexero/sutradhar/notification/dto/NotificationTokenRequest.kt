@@ -1,4 +1,4 @@
-package org.corexero.sutradhar.notification
+package org.corexero.sutradhar.notification.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

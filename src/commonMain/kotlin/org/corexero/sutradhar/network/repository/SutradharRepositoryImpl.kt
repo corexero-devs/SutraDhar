@@ -9,8 +9,11 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import org.corexero.sutradhar.Sutradhar
-import org.corexero.sutradhar.notification.NotificationTokenRequest
 import org.corexero.sutradhar.notification.dto.NotificationResponse
+import org.corexero.sutradhar.notification.dto.NotificationTokenRequest
+import org.corexero.sutradhar.playIntegrity.IntegrityTokenProvider
+import org.corexero.sutradhar.playIntegrity.dto.DbMetaResponse
+import org.corexero.sutradhar.playIntegrity.dto.DbRequest
 import org.corexero.sutradhar.review.dto.FeedbackEnvelope
 import org.corexero.sutradhar.review.dto.FeedbackRequest
 
@@ -45,6 +48,27 @@ class SutradharRepositoryImpl : SutradharRepository {
             successRange = 200..201
         )
     }
+
+    override suspend fun fetchDbIfChanges(
+        tokenProvider: IntegrityTokenProvider,
+        dbRequest: DbRequest
+    ): Result<DbMetaResponse> =
+        runCatching {
+            val payload =
+                """{"productId":"${dbRequest.productId}","appId":"${dbRequest.appId}"}"""
+            val integrityToken = tokenProvider.getToken(payload)
+
+            postJson<DbMetaResponse>(
+                baseUrl = cfg.dbPlayIntegrityBaseUrl,
+                path = "api/v1/db/fetch",
+                bodyObj = dbRequest,
+                headerPairs = listOf(
+                    "x-api-key" to cfg.notificationApiKey(),
+                    "X-Integrity-Token" to integrityToken
+                ) + cfg.defaultHeaders.toList(),
+                successRange = 200..201
+            )
+        }
 
     private suspend inline fun <reified R> postJson(
         baseUrl: String,
