@@ -9,7 +9,7 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.headers
-import org.corexero.sutradhar.Sutradhar
+import org.corexero.sutradhar.appConfig.AppConfigurationProvider
 import org.corexero.sutradhar.notification.dto.NotificationResponse
 import org.corexero.sutradhar.notification.dto.NotificationTokenRequest
 import org.corexero.sutradhar.playIntegrity.IntegrityTokenProvider
@@ -20,20 +20,23 @@ import org.corexero.sutradhar.review.dto.FeedbackRequest
 
 class SutradharRepositoryImpl(
     private val httpClient: HttpClient,
+    private val appConfigurationProvider: AppConfigurationProvider
 ) : SutradharRepository {
 
-    private val cfg get() = Sutradhar.config
+    private val appConfiguration by lazy {
+        appConfigurationProvider.getAppConfiguration()
+    }
 
     override suspend fun saveUserFeedback(
         feedbackRequest: FeedbackRequest
     ): Result<FeedbackEnvelope> = runCatching {
         postJson<FeedbackEnvelope>(
-            baseUrl = cfg.reviewBaseUrl,
+            baseUrl = appConfiguration.reviewBaseUrl,
             path = "api/v1/review/add",
             bodyObj = feedbackRequest,
             headerPairs = listOf(
-                "X-API-Key" to cfg.reviewApiKey()
-            ) + cfg.defaultHeaders.toList()
+                "X-API-Key" to appConfiguration.reviewApiKey
+            ) + appConfiguration.defaultHeaders.toList()
         )
     }
 
@@ -41,12 +44,12 @@ class SutradharRepositoryImpl(
         notificationTokenRequest: NotificationTokenRequest
     ): Result<NotificationResponse> = runCatching {
         postJson<NotificationResponse>(
-            baseUrl = cfg.notificationBaseUrl,
+            baseUrl = appConfiguration.notificationBaseUrl,
             path = "api/v1/tokens",
             bodyObj = notificationTokenRequest,
             headerPairs = listOf(
-                "x-api-key" to cfg.notificationApiKey()
-            ) + cfg.defaultHeaders.toList(),
+                "x-api-key" to appConfiguration.notificationApiKey
+            ) + appConfiguration.defaultHeaders.toList(),
             successRange = 200..201
         )
     }
@@ -61,13 +64,13 @@ class SutradharRepositoryImpl(
             val integrityToken = tokenProvider.getToken(payload)
 
             postJson<DbMetaResponse>(
-                baseUrl = cfg.dbPlayIntegrityBaseUrl,
+                baseUrl = appConfiguration.dbPlayIntegrityBaseUrl,
                 path = "api/v1/db/fetch",
                 bodyObj = dbRequest,
                 headerPairs = listOf(
-                    "x-api-key" to cfg.notificationApiKey(),
+                    "x-api-key" to appConfiguration.notificationApiKey,
                     "X-Integrity-Token" to integrityToken
-                ) + cfg.defaultHeaders.toList(),
+                ) + appConfiguration.defaultHeaders.toList(),
                 successRange = 200..201
             )
         }

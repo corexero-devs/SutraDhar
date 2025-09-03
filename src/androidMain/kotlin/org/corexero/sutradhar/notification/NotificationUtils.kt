@@ -22,10 +22,10 @@ const val CHANNEL_DESCRIPTION =
 fun Context.showNotification(
     textTitle: String?,
     textContent: String?,
+    appIconResId: Int,
     id: Int = DEFAULT_NOTIFICATION_ID
 ) {
 
-    val appIconResId = Sutradhar.config.notificationIcon
     val builder = NotificationCompat.Builder(this, CHANNEL_ID)
         .setSmallIcon(appIconResId)
         .setContentTitle(textTitle)

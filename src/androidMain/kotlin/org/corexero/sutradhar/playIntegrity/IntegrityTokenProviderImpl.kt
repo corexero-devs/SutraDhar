@@ -10,7 +10,7 @@ import org.corexero.sutradhar.utils.StringExtensions
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class IntegrityTokenProviderImpl : IntegrityTokenProvider {
+class IntegrityTokenProviderImpl () : IntegrityTokenProvider {
     private val cloudProjectNumber = 0L
     private var provider: StandardIntegrityManager.StandardIntegrityTokenProvider? = null
 

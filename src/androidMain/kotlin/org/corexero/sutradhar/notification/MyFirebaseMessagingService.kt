@@ -8,8 +8,10 @@ import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.corexero.sutradhar.Sutradhar
+import org.corexero.sutradhar.appConfig.AppConfigurationProvider
 import org.corexero.sutradhar.network.repository.SutradharRepository
 import org.corexero.sutradhar.notification.dto.NotificationTokenRequest
 import org.koin.core.component.KoinComponent
@@ -20,6 +22,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
 
     private val repo by inject<SutradharRepository>()
 
+    private val appConfigurationProvider by inject<AppConfigurationProvider>()
+
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onNewToken(token: String) {
@@ -28,7 +32,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
 
     override fun onMessageReceived(message: RemoteMessage) {
         message.notification?.let {
-            showNotification(it.title, it.body)
+            showNotification(
+                it.title,
+                it.body,
+                appConfigurationProvider.getAppConfiguration().notificationIcon
+            )
         }
     }
 
@@ -47,6 +55,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
             result.onSuccess { Log.d("FCM", "Token stored OK: $it") }
                 .onFailure { Log.e("FCM", "Token store failed", it) }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ioScope.cancel()
     }
 
     private fun appVersion(): String {
