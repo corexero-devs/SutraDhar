@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.androidLint)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.sqlDelight) apply false
+    alias(libs.plugins.goggleService) apply false
+    alias(libs.plugins.googleFirebaseCrashlytics) apply false
 }
 
 
@@ -70,6 +73,9 @@ kotlin {
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.serialization.kotlinx.json)
+                api(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.viewmodel)
             }
         }
 
@@ -85,6 +91,7 @@ kotlin {
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
                 implementation(dependencies.platform(libs.firebase.bom))
+                implementation(dependencies.platform(libs.firebase.crashlytics))
                 implementation(libs.firebase.analytics)
                 implementation(libs.firebase.config)
                 implementation(libs.sqlDelight.android)
@@ -93,12 +100,12 @@ kotlin {
                 implementation(libs.play.services.location)
                 implementation(libs.firebase.inappmessaging.display)
                 implementation(libs.firebase.messaging)
-
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.slf4j.android)
-
                 implementation(libs.androidx.activity)
                 implementation(libs.integrity)
+                implementation(libs.koin.android)
+                implementation(libs.koin.androidx.compose)
             }
         }
 
