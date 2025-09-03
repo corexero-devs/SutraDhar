@@ -10,6 +10,8 @@ import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.pm.PackageManager
+import org.corexero.sutradhar.Sutradhar
+
 private const val CHANNEL_ID = "default_chanel"
 private const val DEFAULT_NOTIFICATION_ID = 1000
 const val CHANNEL_NAME = "General Notifications"
@@ -22,8 +24,10 @@ fun Context.showNotification(
     textContent: String?,
     id: Int = DEFAULT_NOTIFICATION_ID
 ) {
+
+    val appIconResId = Sutradhar.config.notificationIcon
     val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            //.setSmallIcon(Ima)
+        .setSmallIcon(appIconResId)
         .setContentTitle(textTitle)
         .setContentText(textContent)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)

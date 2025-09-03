@@ -11,8 +11,10 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-lateinit var notificationAppContext: Context
- class AndroidNotificationManager(
+import org.corexero.sutradhar.AndroidAppContext
+import org.corexero.sutradhar.Sutradhar
+
+class AndroidNotificationManager(
     private val appContext: Context
 ) : NotificationManager {
 
@@ -63,5 +65,5 @@ lateinit var notificationAppContext: Context
 
 actual object NotificationFactory {
     actual fun createManager(): NotificationManager =
-        AndroidNotificationManager(notificationAppContext)
+        AndroidNotificationManager(appContext = (Sutradhar.appContext as AndroidAppContext).get())
 }

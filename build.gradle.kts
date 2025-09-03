@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.googleFirebaseCrashlytics) apply false
 }
 
+
 kotlin {
 
     // Target declarations - add or remove as needed below. These define
@@ -17,7 +18,6 @@ kotlin {
         namespace = "org.corexero.sutradhar"
         compileSdk = 36
         minSdk = 24
-
 
         withHostTestBuilder {
         }
@@ -103,6 +103,7 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.slf4j.android)
                 implementation(libs.androidx.activity)
+                implementation(libs.integrity)
                 implementation(libs.koin.android)
                 implementation(libs.koin.androidx.compose)
             }
