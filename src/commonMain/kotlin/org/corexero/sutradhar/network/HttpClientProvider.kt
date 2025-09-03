@@ -8,8 +8,8 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-object HttpClientProvider {
-    val jsonConfig = Json {
+internal class HttpClientProvider {
+    private val jsonConfig = Json {
         ignoreUnknownKeys = true
         encodeDefaults = true
         isLenient = true

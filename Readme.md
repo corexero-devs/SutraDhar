@@ -16,6 +16,9 @@ core = "1.7.0"
 playService = "4.4.3"
 googleFirebaseCrashlytics = "3.0.6"
 
+koin = "4.1.0"
+koinComposeMultiplatform = "4.1.0"
+
 //libraries
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4jAndroid" }
@@ -44,6 +47,12 @@ androidx-runner = { group = "androidx.test", name = "runner", version.ref = "run
 androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activityCompose" }
 androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
+
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinComposeMultiplatform" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koinComposeMultiplatform" }
 
 
 //plugins

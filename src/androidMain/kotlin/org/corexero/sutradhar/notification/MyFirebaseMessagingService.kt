@@ -5,17 +5,21 @@ import android.content.pm.PackageManager
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.corexero.sutradhar.network.HttpClientProvider
 import org.corexero.sutradhar.network.SutradharRepositoryImpl
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.Locale
 
-class MyFirebaseMessagingService : FirebaseMessagingService() {
+class MyFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
 
-    private val repo = SutradharRepositoryImpl(HttpClientProvider.client)
+    private val httpClient: HttpClient by this.inject()
+    private val repo = SutradharRepositoryImpl(httpClient)
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onCreate() {

@@ -73,6 +73,9 @@ kotlin {
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.serialization.kotlinx.json)
+                api(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.viewmodel)
             }
         }
 
@@ -97,11 +100,11 @@ kotlin {
                 implementation(libs.play.services.location)
                 implementation(libs.firebase.inappmessaging.display)
                 implementation(libs.firebase.messaging)
-
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.slf4j.android)
-
                 implementation(libs.androidx.activity)
+                implementation(libs.koin.android)
+                implementation(libs.koin.androidx.compose)
             }
         }
 
