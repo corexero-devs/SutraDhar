@@ -36,9 +36,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
     override fun onMessageReceived(message: RemoteMessage) {
         message.notification?.let {
             showNotification(
-                it.title,
-                it.body,
-                appConfiguration.notificationIcon
+                textTitle = it.title,
+                textContent = it.body,
+                action = it.clickAction,
+                appIconResId = appConfiguration.notificationIcon
             )
         }
     }
