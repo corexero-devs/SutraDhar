@@ -34,11 +34,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
+        val action = message.data["deeplink"] ?: message.notification?.link?.toString()
+
         message.notification?.let {
             showNotification(
-                it.title,
-                it.body,
-                appConfiguration.notificationIcon
+                textTitle = it.title,
+                textContent = it.body,
+                action = action,
+                appIconResId = appConfiguration.notificationIcon
             )
         }
     }
