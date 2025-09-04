@@ -3,9 +3,8 @@ plugins {
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.androidLint)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.sqlDelight) apply false
-    alias(libs.plugins.goggleService) apply false
-    alias(libs.plugins.googleFirebaseCrashlytics) apply false
+    alias(libs.plugins.sqlDelight)
+    alias(libs.plugins.goggleService)
 }
 
 
