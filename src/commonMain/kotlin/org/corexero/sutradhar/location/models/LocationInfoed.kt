@@ -2,5 +2,5 @@ package org.corexero.sutradhar.location.models
 
 data class LocationInfoed(
     val location: Location,
-    val entity: Int
+    val entity: Long
 )
